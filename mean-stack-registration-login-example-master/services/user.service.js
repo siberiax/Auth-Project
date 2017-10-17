@@ -31,7 +31,6 @@ function authenticate(username, password) {
             deferred.resolve();
         }
     });
-
     return deferred.promise;
 }
 

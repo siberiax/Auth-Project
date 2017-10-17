@@ -6,7 +6,7 @@ var config = require('config.json');
 router.get('/', function (req, res) {
     // log user out
     delete req.session.token;
-    
+
     // move success message into local variable so it only appears once (single read)
     var viewData = { success: req.session.success };
     delete req.session.success;
@@ -24,7 +24,7 @@ router.post('/', function (req, res) {
         if (error) {
             return res.render('login', { error: 'An error occurred' });
         }
-
+        console.log(body)
         if (!body.token) {
             return res.render('login', { error: body, username: req.body.username });
         }
