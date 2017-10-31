@@ -1,11 +1,11 @@
 <html>
 <head>
-  <script src="node_modules/angular/angular.js"></script>
-  <script='./contollers/register.js'></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+<script='contollers/register.js'></script>
 </head>
-<body ng-app="registerController">
+<body ng-app="registerController" ng-controller="AppCtrl">
   <h1>Register</h1>
-  <div class="container" ng-controller="AppCtrl">
+  <div class="container">
     <form ng-submit='addUser()'>
       <div class="form-group">
         <label>Name</label>
@@ -29,12 +29,22 @@
 </body>
 </html>
 
-<!-- <script>
+<script>
 var registerController = angular.module("registerController", []);
 registerController.controller('AppCtrl', ['$scope', '$http', function($scope, $http){
-  //console.log("HERE");
   $scope.addUser = function() {
-    console.log("This")
+    console.log($scope.user);
+    var req = {
+     method: 'POST',
+     url: 'http://localhost:3000/users/register',
+     headers: {
+       'Content-Type': 'application/json'
+     },
+     data: $scope.user
+    }
+    $http(req).then(function(res){
+      console.log(res);
+    });
   }
 }])
-</script> -->
+</script>
