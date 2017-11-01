@@ -1,7 +1,7 @@
 <html>
 <head>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
-<script='contollers/register.js'></script>
+<script src="controllers/register.js"></script>
 </head>
 <body ng-app="registerController" ng-controller="AppCtrl">
   <h1>Register</h1>
@@ -28,23 +28,3 @@
   </div>
 </body>
 </html>
-
-<script>
-var registerController = angular.module("registerController", []);
-registerController.controller('AppCtrl', ['$scope', '$http', function($scope, $http){
-  $scope.addUser = function() {
-    console.log($scope.user);
-    var req = {
-     method: 'POST',
-     url: 'http://localhost:3000/users/register',
-     headers: {
-       'Content-Type': 'application/json'
-     },
-     data: $scope.user
-    }
-    $http(req).then(function(res){
-      console.log(res);
-    });
-  }
-}])
-</script>
