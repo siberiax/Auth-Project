@@ -1,5 +1,5 @@
 var registerController = angular.module("registerController", []);
-registerController.controller('AppCtrl', ['$scope', '$http', function($scope, $http){
+registerController.controller('AppCtrl', ['$scope', '$http', '$window', function($scope, $http, $window){
   $scope.addUser = function() {
     console.log($scope.user);
     var req = {
@@ -11,7 +11,11 @@ registerController.controller('AppCtrl', ['$scope', '$http', function($scope, $h
      data: $scope.user
     }
     $http(req).then(function(res){
-      console.log(res);
-    });
+      if (!res.data.success){
+        console.log("problem");
+      } else {
+        $window.location.href = '/twoFactorSetup'
+        };
+      })
   }
 }])

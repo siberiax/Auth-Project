@@ -1,5 +1,6 @@
 var loginController = angular.module("loginController", []);
-loginController.controller('AppCtrl', ['$scope', '$http', function($scope, $http){
+
+loginController.controller('AppCtrl', ['$scope', '$http', '$window', function($scope, $http, $window){
   $scope.loginUser = function() {
     console.log($scope.user);
     var req = {
@@ -14,9 +15,8 @@ loginController.controller('AppCtrl', ['$scope', '$http', function($scope, $http
       if (!res.data.success){
         console.log("problem");
       } else {
-        $window.location.href = '/2fa.html';
-        });
-      }
-    });
-  }
+        $window.location.href = '/2fa'
+        };
+      })
+    }
 }])

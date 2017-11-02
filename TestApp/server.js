@@ -59,6 +59,10 @@ app.get('/2fa', (req, res) => {
   res.sendFile(path.join(__dirname, '/public/2fa.html'))
 })
 
+app.get('/twoFactorSetup', (req, res) => {
+  res.sendFile(path.join(__dirname, '/public/twoFactorSetup.html'))
+})
+
 // Start Server
 app.listen(port, () => {
   console.log('Server started on port '+port);
