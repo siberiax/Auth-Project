@@ -55,6 +55,10 @@ app.get('/login', (req, res) => {
   res.sendFile(path.join(__dirname, '/public/login.html'))
 })
 
+app.get('/2fa', (req, res) => {
+  res.sendFile(path.join(__dirname, '/public/2fa.html'))
+})
+
 // Start Server
 app.listen(port, () => {
   console.log('Server started on port '+port);

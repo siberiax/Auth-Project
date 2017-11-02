@@ -24,6 +24,8 @@
 <!doctype html>
 <html>
 <head>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+  <script src="controllers/login.js"></script>
   <meta charset="utf-8">
   <title>Login</title>
   <link rel="stylesheet" href="https://bootswatch.com/sandstone/bootstrap.min.css">
@@ -32,17 +34,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
 </head>
-<body>
-    <form>
+<body ng-app="loginController" ng-controller="AppCtrl">
+    <form ng-submit="loginUser()">
       <div class="form-group">
         <div class="col-xs-2">
           <h1><b>Login</b></h1>
           <br>
           <label for="ex1"><b>Username</b></label>
-          <input type="text" placeholder="Enter Username" name="username" required class="form-control" id="ex1">
+          <input type="text" placeholder="Enter Username" name="username" ng-model="user.username" required class="form-control" id="ex1">
           <br>
           <label for"ex1"><b>Password</b></label>
-          <input type="password" placeholder="Enter Password" name="password" required class="form-control" id="ex1">
+          <input type="password" placeholder="Enter Password" name="password" ng-model="user.password" required class="form-control" id="ex1">
           <br>
           <input type="submit" class="btn btn-primary" value="Login">
         </div>
