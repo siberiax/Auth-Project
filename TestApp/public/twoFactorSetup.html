@@ -1,1 +1,31 @@
-It's here
+<!DOCTYPE>
+<html ng-app="twoSetupController" ng-controller="AppCtrl">
+  <head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" type="text/css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+    <script src="controllers/twoFactorSetup.js"></script>
+  </head>
+  <body>
+    <div class="container">
+        <div class="row">
+            <h1>WELCOME</h1>
+            <p>
+                <a href="/login">Go to Login</a>
+            </p>
+        </div>
+    </div>
+    <div>
+      <div class="col-md-4 col-md-offset-4" v-if="!twofactor.secret">
+        <h3>Setup Otp</h3>
+        <div>
+          <button ng-click="onClick()"  class="btn btn-default">Display QRcode</button>
+        </div>
+        <span>
+          <p>Scan the QR code or enter the secret in Google Authenticator</p>
+          <img ng-src="{{qrcode}}" alt="..." class="img-thumbnail">
+          <p>Secret - {{twofactor.tempSecret}}</p>
+          <p>Type - TOTP</p>
+        </span>
+    </div>
+  </body>
+</html>

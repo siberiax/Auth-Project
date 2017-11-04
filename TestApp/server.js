@@ -4,6 +4,8 @@ const bodyParser = require('body-parser')
 const passport = require('passport');
 const mongoose = require('mongoose');
 const config = require('./config/database');
+const speakeasy = require('speakeasy');
+const QRCode = require('qrcode');
 
 // Connect To Database
 mongoose.connect(config.database);
@@ -62,6 +64,26 @@ app.get('/2fa', (req, res) => {
 app.get('/twoFactorSetup', (req, res) => {
   res.sendFile(path.join(__dirname, '/public/twoFactorSetup.html'))
 })
+
+app.post('/twoFactorSetup', function(req, res){
+    console.log("HERE")
+    const secret = speakeasy.generateSecret({length: 10});
+    QRCode.toDataURL(secret.otpauth_url, (err, data_url)=>{
+        //save to logged in user.
+        // user.twofactor = {
+        //     secret: "",
+        //     tempSecret: secret.base32,
+        //     dataURL: data_url,
+        //     otpURL: secret.otpauth_url
+        // };
+        return res.json({
+            message: 'Verify OTP',
+            tempSecret: secret.base32,
+            dataURL: data_url,
+            otpURL: secret.otpauth_url
+        });
+    });
+});
 
 // Start Server
 app.listen(port, () => {
