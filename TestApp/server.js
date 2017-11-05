@@ -80,19 +80,23 @@ app.get('/twoFactorSetup', (req, res) => {
 app.post('/twoFactorSetup', function(req, res){
     const secret = speakeasy.generateSecret({length: 10});
     QRCode.toDataURL(secret.otpauth_url, (err, data_url)=>{
-        //save to logged in user.
-        // user.twofactor = {
-        //     secret: "",
-        //     tempSecret: secret.base32,
-        //     dataURL: data_url,
-        //     otpURL: secret.otpauth_url
-        // };
+      var twofactor = {
+         secret: "",
+         tempSecret: secret.base32,
+         dataURL: data_url,
+         otpURL: secret.otpauth_url
+      };
+      console.log(req.body);
+      User.setupTwoFactor(req.body, twofactor, (err, user) =>{
+        if (err) throw err;
+        console.log(user);
         return res.json({
             message: 'Verify OTP',
             tempSecret: secret.base32,
             dataURL: data_url,
             otpURL: secret.otpauth_url
         });
+      });
     });
 });
 

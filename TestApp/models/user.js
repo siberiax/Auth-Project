@@ -18,6 +18,9 @@ const UserSchema = mongoose.Schema({
   password: {
     type: String,
     required: true
+  },
+  twofactor: {
+    type: Object
   }
 });
 
@@ -47,4 +50,12 @@ module.exports.comparePassword = function(candidatePassword, hash, callback){
     if (err) throw err;
     callback(null, isMatch);
   });
+}
+
+module.exports.setupTwoFactor = function(user, twofactor, callback){
+  var query = { 'username': user.username }
+  User.findOneAndUpdate(query, { $set: { 'twofactor': twofactor } }, (err, doc) => {
+    if (err) throw err;
+    callback(null, user);
+  })
 }
