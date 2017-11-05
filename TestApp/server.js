@@ -73,11 +73,11 @@ app.get('/2fa', authCheck,(req, res) => {
   res.sendFile(path.join(__dirname, '/public/2fa.html'))
 })
 
-app.get('/twoFactorSetup', passport.authenticate('jwt', {session:false}), (req, res) => {
+app.get('/twoFactorSetup', (req, res) => {
   res.sendFile(path.join(__dirname, '/public/twoFactorSetup.html'))
 })
 
-app.post('/twoFactorSetup', passport.authenticate('jwt', {session:false}), function(req, res){
+app.post('/twoFactorSetup', function(req, res){
     const secret = speakeasy.generateSecret({length: 10});
     QRCode.toDataURL(secret.otpauth_url, (err, data_url)=>{
         //save to logged in user.
