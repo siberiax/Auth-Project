@@ -14,6 +14,7 @@ registerController.controller('AppCtrl', ['$scope', '$http', '$window', function
       if (!res.data.success){
         console.log("problem");
       } else {
+        $window.localStorage.setItem('fromRegister', 'true');
         $window.location.href = '/twoFactorSetup'
         };
       })

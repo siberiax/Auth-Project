@@ -1,6 +1,16 @@
 var twoSetupController = angular.module("twoSetupController", []);
 twoSetupController.controller('AppCtrl', ['$scope', '$http', '$window', function($scope, $http, $window){
 
+  $scope.allowed = false;
+
+  if ($window.localStorage.getItem('fromRegister') == 'true'){
+    console.log('all good')
+    $scope.allowed = true;
+    $window.localStorage.removeItem('fromRegister');
+  } else {
+    $window.location.href = '/register'
+  }
+  
   $scope.qrcode = ""
 
   $scope.onClick = function() {
