@@ -16,11 +16,9 @@ loginController.controller('AppCtrl', ['$scope', '$http', '$window', function($s
       if (!res.data.success){
         console.log("problem");
       } else {
-        console.log(res);
-        //$window.localStorage.setItem('id_token', res.data.token);
-        //$window.localStorage.setItem('user', JSON.stringify(res.data.user));
-        //$window.localStorage.setItem('fromLogin', 'true');
-        $window.location.href = '/2fa'
+        $window.localStorage.setItem('id_token', res.data.token);
+        $window.localStorage.setItem('user', JSON.stringify(res.data.user));
+        $window.location.href = '/2fa';
         };
       })
     }
