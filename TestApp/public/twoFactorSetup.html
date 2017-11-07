@@ -1,31 +1,57 @@
+<nav class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+        <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">Two-Factor Authentication App</a>
+    </div>
+    <div id="navbar" class="collapse navbar-collapse">
+      <ul class="nav navbar-nav navbar-left">
+        <li><a href="/">Home</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/login">Login</a></li>
+        <li><a href="/register">Register</a></li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div>
+</nav>
+
 <!DOCTYPE>
 <html ng-app="twoSetupController" ng-controller="AppCtrl">
   <head>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="https://bootswatch.com/3/sandstone/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
     <script src="controllers/twoFactorSetup.js"></script>
   </head>
   <body ng-show='allowed==true'>
     <div class="container">
-        <div class="row">
-            <h1>WELCOME</h1>
-            <p>
-                <a href="/login">Go to Login</a>
-            </p>
-        </div>
+      <h1>WELCOME</h1>
+      <p><a href="/login">Go to Login</a></p>
     </div>
-    <div>
-      <div class="col-md-4 col-md-offset-4" v-if="!twofactor.secret">
+    <div class="container">
+      <div>
         <h3>Setup Otp</h3>
         <div>
-          <button ng-click="onClick()"  class="btn btn-default">Display QRcode</button>
+          <button ng-click="onClick()" class="btn btn-default">Display QRcode</button>
         </div>
-        <span>
-          <p>Scan the QR code or enter the secret in Google Authenticator</p>
+        <div ng-if="display">
+          <p>Scan the QR code using Google Authenticator</p>
           <img ng-src="{{qrcode}}" alt="..." class="img-thumbnail">
-          <p>Secret - {{twofactor.tempSecret}}</p>
-          <p>Type - TOTP</p>
-        </span>
+          <form ng-submit=confirmOTP()>
+            <div class="form-group">
+              <br>
+              <label for="otp"><b>Enter Otp:</b></label>
+              <input type="text" style="width: 240px" name="otp" class="form-control" id="otp">
+              <br>
+              <input type="submit" class="btn btn-primary" value="Submit">
+            </div>
+          </form>
+        </div>
     </div>
   </body>
 </html>

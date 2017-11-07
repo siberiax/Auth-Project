@@ -10,7 +10,7 @@ twoSetupController.controller('AppCtrl', ['$scope', '$http', '$window', function
   } else {
     $window.location.href = '/register'
   }
-  
+
   $scope.qrcode = ""
 
   $scope.onClick = function() {
@@ -21,7 +21,12 @@ twoSetupController.controller('AppCtrl', ['$scope', '$http', '$window', function
     $http(req).then(function(res){
       console.log(res);
       $scope.qrcode = res.data.dataURL;
-      //console.log(qrcode);
-      })
+      $scope.display = true;
+    })
   }
+
+  $scope.confirmOTP = function() {
+    console.log("HERE");
+  }
+
 }])
