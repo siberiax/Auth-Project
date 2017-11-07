@@ -8,6 +8,7 @@ const speakeasy = require('speakeasy');
 const QRCode = require('qrcode');
 const User = require('./models/user');
 const jwt = require('jsonwebtoken');
+const cookieParser = require('cookie-parser')
 
 // Connect To Database
 mongoose.connect(config.database);
@@ -37,6 +38,7 @@ app.use(bodyParser.json());
 
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(cookieParser())
 
 require('./config/passport.js')(passport);
 
@@ -48,7 +50,8 @@ app.get('/', (req, res) => {
 });
 
 function authCheck(req, res, next){
-  var token = app.get('token');
+  console.log(req.cookies.auth);
+  var token = req.cookies.auth;
   try {
     jwt.verify(token, config.secret)
     return next();
@@ -80,24 +83,27 @@ app.get('/twoFactorSetup', (req, res) => {
 app.post('/twoFactorSetup', function(req, res){
     const secret = speakeasy.generateSecret({length: 10});
     QRCode.toDataURL(secret.otpauth_url, (err, data_url)=>{
-        //save to logged in user.
-        // user.twofactor = {
-        //     secret: "",
-        //     tempSecret: secret.base32,
-        //     dataURL: data_url,
-        //     otpURL: secret.otpauth_url
-        // };
+      var twofactor = {
+         secret: "",
+         tempSecret: secret.base32,
+         dataURL: data_url,
+         otpURL: secret.otpauth_url
+      };
+      console.log(req.body);
+      User.setupTwoFactor(req.body, twofactor, (err, user) =>{
+        if (err) throw err;
+        console.log(user);
         return res.json({
             message: 'Verify OTP',
             tempSecret: secret.base32,
             dataURL: data_url,
             otpURL: secret.otpauth_url
         });
+      });
     });
 });
 
 app.post('/authenticate', (req, res, next) => {
-  console.log("HERE")
   const username = req.body.username;
   const password = req.body.password;
 
@@ -112,9 +118,9 @@ app.post('/authenticate', (req, res, next) => {
          const token = jwt.sign({data: user}, config.secret, {
            expiresIn: 604800
          });
-        app.set('token', token);
-        res.json({success: true,
-          token: 'JWT ' + token,
+         res.cookie('auth', token);
+          res.json({success: true,
+          token: token,
           user: {
             id: user._id,
             name: user.name,

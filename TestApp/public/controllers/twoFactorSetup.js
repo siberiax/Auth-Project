@@ -13,10 +13,16 @@ twoSetupController.controller('AppCtrl', ['$scope', '$http', '$window', function
 
   $scope.qrcode = ""
 
+  var user = $window.localStorage.getItem('user')
+  console.log(user);
   $scope.onClick = function() {
     var req = {
      method: 'POST',
-     url: 'http://localhost:3000/twoFactorSetup'
+     url: 'http://localhost:3000/twoFactorSetup',
+     headers: {
+       'Content-Type': 'application/json'
+     },
+     data: user
     }
     $http(req).then(function(res){
       console.log(res);
