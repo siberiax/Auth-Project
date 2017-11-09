@@ -202,7 +202,7 @@ app.post('/register', (req, res, next) => {
 });
 
 app.get('/logout', (req, res) => {
-  app.set('token', null);
+  res.clearCookie('auth');
   res.redirect('/')
 })
 
