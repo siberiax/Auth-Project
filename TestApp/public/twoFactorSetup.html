@@ -40,13 +40,14 @@
           <button ng-click="onClick()" class="btn btn-default">Display QRcode</button>
         </div>
         <div ng-if="display">
-          <p>Scan the QR code using Google Authenticator</p>
+          <br>
+          <p><b>Scan the QR code using Google Authenticator</b></p>
           <img ng-src="{{qrcode}}" alt="..." class="img-thumbnail">
-          <form ng-submit=confirmOTP()>
+          <form ng-submit="confirmOTP(otp)">
             <div class="form-group">
               <br>
               <label for="otp"><b>Enter Otp:</b></label>
-              <input type="text" style="width: 240px" name="otp" class="form-control" id="otp">
+              <input type="text" style="width: 240px" name="otp" required class="form-control" ng-model = 'otp' id="otp">
               <br>
               <input type="submit" class="btn btn-primary" value="Submit">
             </div>

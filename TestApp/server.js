@@ -30,6 +30,9 @@ const users = require('./routes/users');
 // Port Number
 const port = 3000;
 
+// Initialize variable
+var secret = ""
+
 // Set Static Folder
 app.use(express.static(__dirname + "/public"));
 
@@ -81,7 +84,7 @@ app.get('/twoFactorSetup', (req, res) => {
 })
 
 app.post('/twoFactorSetup', function(req, res){
-    const secret = speakeasy.generateSecret({length: 10});
+    secret = speakeasy.generateSecret({length: 10});
     QRCode.toDataURL(secret.otpauth_url, (err, data_url)=>{
       var twofactor = {
          secret: "",
@@ -97,9 +100,54 @@ app.post('/twoFactorSetup', function(req, res){
             message: 'Verify OTP',
             tempSecret: secret.base32,
             dataURL: data_url,
-            otpURL: secret.otpauth_url
+            otpURL: secret.otpauth_url,
+            username: user.username
         });
       });
+    });
+});
+
+app.post('/twoFactorVerify', function(req, res) {
+
+    console.log(req.body.otp);
+    var username = req.body.username;
+    console.log(username);
+    User.getUserByUsername(username, (err, user) => {
+      if (err) throw err;
+      if (!user){
+        return res.json({success: false, msg: "user not found"});
+      }
+      console.log(user.twofactor.tempSecret)
+
+      var verified = speakeasy.totp.verify({
+        secret: user.twofactor.tempSecret,
+        encoding: 'base32',
+        token: req.body.otp
+      });
+
+      if(verified) {
+        console.log("verified");
+        QRCode.toDataURL(secret.otpauth_url, (err, data_url)=>{
+          var twofactor = {
+             secret: user.twofactor.tempSecret,
+             tempSecret: "",
+             dataURL: data_url,
+             otpURL: secret.otpauth_url
+          };
+          console.log(twofactor);
+          User.setupTwoFactor(user, twofactor, (err, usr) =>{
+            if (err) throw err;
+            return res.json({
+              success: true,
+              msg: "Two-factor auth enabled",
+              twoFA: twofactor
+            });
+          });
+        });
+      }
+      else {
+        return res.json({success: false, msg: "Invalid token, verification failed"});
+      }
     });
 });
 
