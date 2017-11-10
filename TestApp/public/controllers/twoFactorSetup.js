@@ -6,7 +6,6 @@ twoSetupController.controller('AppCtrl', ['$scope', '$http', '$window', function
   $scope.result = "";
 
   if ($window.localStorage.getItem('fromRegister') == 'true'){
-    console.log('all good')
     $scope.allowed = true;
     $window.localStorage.removeItem('fromRegister');
   } else {
@@ -15,7 +14,6 @@ twoSetupController.controller('AppCtrl', ['$scope', '$http', '$window', function
 
   $scope.qrcode = ""
 
-  var user = $window.localStorage.getItem('user')
   $scope.onClick = function() {
     var req = {
       method: 'POST',
