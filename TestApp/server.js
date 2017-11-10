@@ -47,7 +47,6 @@ require('./config/passport.js')(passport);
 
 app.use('/users', users);
 
-// Index Route
 app.get('/', (req, res) => {
   res.send('Invalid Endpoint');
 });
@@ -71,10 +70,6 @@ function authCheck(req, res, next){
     res.redirect('/login');
   }
 }
-
-// app.get('*', (req, res) => {
-//   res.sendFile(path.join(__dirname, '/public/index.html'))
-// });
 
 app.get('/register', (req, res) => {
   res.sendFile(path.join(__dirname, '/public/register.html'))
@@ -105,10 +100,8 @@ app.post('/twoFactorSetup', function(req, res){
          dataURL: data_url,
          otpURL: secret.otpauth_url
       };
-      console.log(req.body);
       User.setupTwoFactor(req.body, twofactor, (err, user) =>{
         if (err) throw err;
-        console.log(user);
         return res.json({
             message: 'Verify OTP',
             tempSecret: secret.base32,
@@ -122,19 +115,17 @@ app.post('/twoFactorSetup', function(req, res){
 
 app.post('/twoFactorVerifyLogin', authCheck1, function(req, res){
   var username = req.body.username;
-  console.log(req.body);
   User.getUserByUsername(username, (err, user) => {
     if (err) throw err;
     if (!user){
       return res.json({success: false, msg: "user not found"});
     }
-
+    console.log(user);
     var verified = speakeasy.totp.verify({
       secret: user.twofactor.secret,
       encoding: 'base32',
       token: req.body.otp
     });
-    console.log(verified)
     if(verified) {
       res.cookie('Authorizaton', req.cookies.auth);
       res.cookie('auth', null);
@@ -150,24 +141,22 @@ app.post('/twoFactorVerifyLogin', authCheck1, function(req, res){
 
 app.post('/twoFactorVerify', function(req, res) {
     var username = req.body.username;
-    console.log(req.body);
     User.getUserByUsername(username, (err, user) => {
       if (err) throw err;
       if (!user){
         return res.json({success: false, msg: "user not found"});
       }
-
+      console.log(req.body.otp);
       var verified = speakeasy.totp.verify({
         secret: user.twofactor.tempSecret,
         encoding: 'base32',
         token: req.body.otp
       });
-
+      console.log(verified);
       if(verified) {
         QRCode.toDataURL(secret.otpauth_url, (err, data_url)=>{
           var twofactor = {
              secret: user.twofactor.tempSecret,
-             tempSecret: "",
              dataURL: data_url,
              otpURL: secret.otpauth_url
           };
@@ -220,7 +209,6 @@ app.post('/authenticate', (req, res, next) => {
 });
 
 app.post('/register', (req, res, next) => {
-  console.log(req.body);
   let newUser = new User({
     name: req.body.name,
     email: req.body.email,

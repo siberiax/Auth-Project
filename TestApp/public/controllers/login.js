@@ -2,7 +2,6 @@ var loginController = angular.module("loginController", []);
 
 loginController.controller('AppCtrl', ['$scope', '$http', '$window', function($scope, $http, $window){
   $scope.loginUser = function() {
-    console.log($scope.user);
     var req = {
      method: 'POST',
      url: 'http://localhost:3000/authenticate',
@@ -16,7 +15,6 @@ loginController.controller('AppCtrl', ['$scope', '$http', '$window', function($s
       if (!res.data.success){
         console.log("problem");
       } else {
-        $window.localStorage.setItem('id_token', res.data.token);
         $window.localStorage.setItem('user', JSON.stringify(res.data.user));
         $window.location.href = '/2fa';
         };

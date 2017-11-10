@@ -1,7 +1,6 @@
 var registerController = angular.module("registerController", []);
 registerController.controller('AppCtrl', ['$scope', '$http', '$window', function($scope, $http, $window){
   $scope.addUser = function() {
-    console.log($scope.user);
     var req = {
      method: 'POST',
      url: 'http://localhost:3000/register',

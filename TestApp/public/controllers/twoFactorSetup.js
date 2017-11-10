@@ -3,6 +3,8 @@ twoSetupController.controller('AppCtrl', ['$scope', '$http', '$window', function
 
   $scope.allowed = false;
 
+  $scope.result = "";
+
   if ($window.localStorage.getItem('fromRegister') == 'true'){
     console.log('all good')
     $scope.allowed = true;
@@ -12,7 +14,6 @@ twoSetupController.controller('AppCtrl', ['$scope', '$http', '$window', function
   }
 
   $scope.qrcode = ""
-  $scope.user = ""
 
   var user = $window.localStorage.getItem('user')
   console.log(user);
@@ -26,12 +27,10 @@ twoSetupController.controller('AppCtrl', ['$scope', '$http', '$window', function
       data: user
     }
     $http(req).then(function(res){
-      console.log(res);
       $scope.qrcode = res.data.dataURL;
-      $scope.display = true;
-      $scope.username = res.data.username;
     })
   }
+
   $scope.confirmOTP = function(otp) {
     $scope.otp = otp;
     console.log($scope.otp);
@@ -41,15 +40,16 @@ twoSetupController.controller('AppCtrl', ['$scope', '$http', '$window', function
         headers: {
           'Content-Type': 'application/json'
         },
-        data: {otp: $scope.otp, username: $scope.username}
+        data: {otp: $scope.otp, username: JSON.parse($window.localStorage.getItem('user')).username}
       }
       $http(req).then(function(res) {
-        if(!res.data.success) {
-          console.log(res.data.msg);
+        console.log(res);
+        if(res.data.success) {
+          $scope.result = "Success! You can login now";
         }
         else {
-          console.log(res.data.msg);
+          $scope.result = "Incorrect OTP";
         }
       })
-  }
-}])
+    }
+}]);

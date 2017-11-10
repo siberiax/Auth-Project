@@ -14,11 +14,10 @@ twoSetupVerification.controller('AppCtrl', ['$scope', '$http', '$window', functi
       data: {otp: $scope.otp, username: JSON.parse($window.localStorage.getItem('user')).username}
     }
     $http(req).then(function(res) {
+      console.log(res.data.success)
       if(res.data.success) {
-        console.log(res);
         $window.location.href = '/profile';
       } else {
-        console.log(res);
         $scope.failure = "Wrong OTP";
       }
     })

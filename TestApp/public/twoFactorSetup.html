@@ -30,16 +30,12 @@
   </head>
   <body ng-show='allowed==true'>
     <div class="container">
-      <h1>WELCOME</h1>
-      <p><a href="/login">Go to Login</a></p>
-    </div>
-    <div class="container">
       <div>
         <h3>Setup Otp</h3>
         <div>
           <button ng-click="onClick()" class="btn btn-default">Display QRcode</button>
         </div>
-        <div ng-if="display">
+        <div>
           <br>
           <p><b>Scan the QR code using Google Authenticator</b></p>
           <img ng-src="{{qrcode}}" alt="..." class="img-thumbnail">
@@ -53,6 +49,7 @@
             </div>
           </form>
         </div>
+        {{result}}
     </div>
   </body>
 </html>
