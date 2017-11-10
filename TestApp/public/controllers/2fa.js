@@ -4,7 +4,6 @@ twoSetupVerification.controller('AppCtrl', ['$scope', '$http', '$window', functi
   $scope.failure = "";
 
   $scope.verify = function(otp){
-    console.log(otp);
     var req = {
       method: 'POST',
       url: 'http://localhost:3000/twoFactorVerifyLogin',
@@ -14,7 +13,6 @@ twoSetupVerification.controller('AppCtrl', ['$scope', '$http', '$window', functi
       data: {otp: $scope.otp, username: JSON.parse($window.localStorage.getItem('user')).username}
     }
     $http(req).then(function(res) {
-      console.log(res.data.success)
       if(res.data.success) {
         $window.location.href = '/profile';
       } else {

@@ -1,5 +1,8 @@
 var registerController = angular.module("registerController", []);
 registerController.controller('AppCtrl', ['$scope', '$http', '$window', function($scope, $http, $window){
+
+  $scope.failure = "";
+
   $scope.addUser = function() {
     var req = {
      method: 'POST',
@@ -11,7 +14,11 @@ registerController.controller('AppCtrl', ['$scope', '$http', '$window', function
     }
     $http(req).then(function(res){
       if (!res.data.success){
-        console.log("problem");
+        if (res.data.msg == 'bad email'){
+          $scope.failure = "Please enter a valid email";
+        } else {
+          $scope.failure = "Failure with Registration";
+        }
       } else {
         $window.localStorage.setItem('fromRegister', 'true');
         $window.localStorage.setItem('user', JSON.stringify($scope.user));

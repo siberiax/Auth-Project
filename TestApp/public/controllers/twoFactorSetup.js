@@ -16,7 +16,6 @@ twoSetupController.controller('AppCtrl', ['$scope', '$http', '$window', function
   $scope.qrcode = ""
 
   var user = $window.localStorage.getItem('user')
-  console.log(user);
   $scope.onClick = function() {
     var req = {
       method: 'POST',
@@ -33,7 +32,6 @@ twoSetupController.controller('AppCtrl', ['$scope', '$http', '$window', function
 
   $scope.confirmOTP = function(otp) {
     $scope.otp = otp;
-    console.log($scope.otp);
       var req = {
         method: 'POST',
         url: 'http://localhost:3000/twoFactorVerify',
@@ -43,7 +41,6 @@ twoSetupController.controller('AppCtrl', ['$scope', '$http', '$window', function
         data: {otp: $scope.otp, username: JSON.parse($window.localStorage.getItem('user')).username}
       }
       $http(req).then(function(res) {
-        console.log(res);
         if(res.data.success) {
           $scope.result = "Success! You can login now";
         }

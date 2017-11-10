@@ -1,6 +1,9 @@
 var loginController = angular.module("loginController", []);
 
 loginController.controller('AppCtrl', ['$scope', '$http', '$window', function($scope, $http, $window){
+
+  $scope.failure = "";
+
   $scope.loginUser = function() {
     var req = {
      method: 'POST',
@@ -13,7 +16,7 @@ loginController.controller('AppCtrl', ['$scope', '$http', '$window', function($s
 
     $http(req).then(function(res){
       if (!res.data.success){
-        console.log("problem");
+        $scope.failure = "Failed to login";
       } else {
         $window.localStorage.setItem('user', JSON.stringify(res.data.user));
         $window.location.href = '/2fa';

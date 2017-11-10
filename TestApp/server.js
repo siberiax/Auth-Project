@@ -71,6 +71,11 @@ function authCheck(req, res, next){
   }
 }
 
+function validateEmail(email) {
+  var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  return re.test(email);
+}
+
 app.get('/register', (req, res) => {
   res.sendFile(path.join(__dirname, '/public/register.html'))
 })
@@ -120,7 +125,6 @@ app.post('/twoFactorVerifyLogin', authCheck1, function(req, res){
     if (!user){
       return res.json({success: false, msg: "user not found"});
     }
-    console.log(user);
     var verified = speakeasy.totp.verify({
       secret: user.twofactor.secret,
       encoding: 'base32',
@@ -146,13 +150,11 @@ app.post('/twoFactorVerify', function(req, res) {
       if (!user){
         return res.json({success: false, msg: "user not found"});
       }
-      console.log(req.body.otp);
       var verified = speakeasy.totp.verify({
         secret: user.twofactor.tempSecret,
         encoding: 'base32',
         token: req.body.otp
       });
-      console.log(verified);
       if(verified) {
         QRCode.toDataURL(secret.otpauth_url, (err, data_url)=>{
           var twofactor = {
@@ -209,20 +211,24 @@ app.post('/authenticate', (req, res, next) => {
 });
 
 app.post('/register', (req, res, next) => {
-  let newUser = new User({
-    name: req.body.name,
-    email: req.body.email,
-    username: req.body.username,
-    password: req.body.password,
-  });
-  User.addUser(newUser, (err, user) => {
-    if (err){
-      res.json({success: false, msg: 'failed to register user'});
-    } else {
-      res.json({success: true, msg: 'User registered'});
-    }
-  });
-
+  var email = req.body.email;
+  if (!validateEmail(email)){
+    res.json({success: false, msg: 'bad email'});
+  } else {
+    let newUser = new User({
+      name: req.body.name,
+      email: req.body.email,
+      username: req.body.username,
+      password: req.body.password,
+    });
+    User.addUser(newUser, (err, user) => {
+      if (err){
+        res.json({success: false, msg: 'failed to register user'});
+      } else {
+        res.json({success: true, msg: 'User registered'});
+      }
+    });
+  }
 });
 
 app.get('/logout', (req, res) => {
