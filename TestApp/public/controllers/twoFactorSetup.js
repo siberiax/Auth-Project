@@ -49,6 +49,7 @@ twoSetupController.controller('AppCtrl', ['$scope', '$http', '$window', function
         }
         else {
           console.log(res.data.msg);
+          $window.location.href = '/login'
         }
       })
   }
