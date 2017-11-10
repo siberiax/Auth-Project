@@ -52,9 +52,18 @@ app.get('/', (req, res) => {
   res.send('Invalid Endpoint');
 });
 
-function authCheck(req, res, next){
-  console.log(req.cookies.auth);
+function authCheck1(req, res, next){
   var token = req.cookies.auth;
+  try {
+    jwt.verify(token, config.secret)
+    return next();
+  } catch (e) {
+    res.redirect('/login');
+  }
+}
+
+function authCheck(req, res, next){
+  var token = req.cookies.Authorizaton;
   try {
     jwt.verify(token, config.secret)
     return next();
@@ -75,12 +84,16 @@ app.get('/login', (req, res) => {
   res.sendFile(path.join(__dirname, '/public/login.html'))
 })
 
-app.get('/2fa', authCheck,(req, res) => {
+app.get('/2fa', authCheck1,(req, res) => {
   res.sendFile(path.join(__dirname, '/public/2fa.html'))
 })
 
 app.get('/twoFactorSetup', (req, res) => {
   res.sendFile(path.join(__dirname, '/public/twoFactorSetup.html'))
+})
+
+app.get('/profile', authCheck,(req, res) => {
+  res.sendFile(path.join(__dirname, '/public/profile.html'))
 })
 
 app.post('/twoFactorSetup', function(req, res){
@@ -107,17 +120,42 @@ app.post('/twoFactorSetup', function(req, res){
     });
 });
 
-app.post('/twoFactorVerify', function(req, res) {
+app.post('/twoFactorVerifyLogin', authCheck1, function(req, res){
+  var username = req.body.username;
+  console.log(req.body);
+  User.getUserByUsername(username, (err, user) => {
+    if (err) throw err;
+    if (!user){
+      return res.json({success: false, msg: "user not found"});
+    }
 
-    console.log(req.body.otp);
+    var verified = speakeasy.totp.verify({
+      secret: user.twofactor.secret,
+      encoding: 'base32',
+      token: req.body.otp
+    });
+    console.log(verified)
+    if(verified) {
+      res.cookie('Authorizaton', req.cookies.auth);
+      res.cookie('auth', null);
+      return res.json({
+        success: true,
+        msg: "Two-factor auth enabled",
+      });
+    } else {
+      return res.json({success: false, msg: "Invalid token, verification failed"});
+    }
+  });
+});
+
+app.post('/twoFactorVerify', function(req, res) {
     var username = req.body.username;
-    console.log(username);
+    console.log(req.body);
     User.getUserByUsername(username, (err, user) => {
       if (err) throw err;
       if (!user){
         return res.json({success: false, msg: "user not found"});
       }
-      console.log(user.twofactor.tempSecret)
 
       var verified = speakeasy.totp.verify({
         secret: user.twofactor.tempSecret,
@@ -126,7 +164,6 @@ app.post('/twoFactorVerify', function(req, res) {
       });
 
       if(verified) {
-        console.log("verified");
         QRCode.toDataURL(secret.otpauth_url, (err, data_url)=>{
           var twofactor = {
              secret: user.twofactor.tempSecret,
@@ -134,7 +171,6 @@ app.post('/twoFactorVerify', function(req, res) {
              dataURL: data_url,
              otpURL: secret.otpauth_url
           };
-          console.log(twofactor);
           User.setupTwoFactor(user, twofactor, (err, usr) =>{
             if (err) throw err;
             return res.json({
@@ -163,10 +199,10 @@ app.post('/authenticate', (req, res, next) => {
     User.comparePassword(password, user.password, (err, isMatch) => {
       if (err) throw err;
       if (isMatch){
-         const token = jwt.sign({data: user}, config.secret, {
+          const token = jwt.sign({data: user}, config.secret, {
            expiresIn: 604800
          });
-         res.cookie('auth', token);
+          res.cookie('auth', token);
           res.json({success: true,
           token: token,
           user: {
@@ -202,9 +238,16 @@ app.post('/register', (req, res, next) => {
 });
 
 app.get('/logout', (req, res) => {
-  app.set('token', null);
-  res.redirect('/')
+  cookie = req.cookies;
+  for (var prop in cookie) {
+      if (!cookie.hasOwnProperty(prop)) {
+          continue;
+      }
+      res.cookie(prop, '', {expires: new Date(0)});
+  }
+  res.redirect('/');
 })
+
 
 // Start Server
 app.listen(port, () => {

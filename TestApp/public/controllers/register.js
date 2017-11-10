@@ -4,7 +4,7 @@ registerController.controller('AppCtrl', ['$scope', '$http', '$window', function
     console.log($scope.user);
     var req = {
      method: 'POST',
-     url: 'http://localhost:3000/users/register',
+     url: 'http://localhost:3000/register',
      headers: {
        'Content-Type': 'application/json'
      },
