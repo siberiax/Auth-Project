@@ -92,8 +92,8 @@ app.get('/twoFactorSetup', (req, res) => {
   res.sendFile(path.join(__dirname, '/public/twoFactorSetup.html'))
 })
 
-app.get('/profile', authCheck,(req, res) => {
-  res.sendFile(path.join(__dirname, '/public/profile.html'))
+app.get('/home', authCheck,(req, res) => {
+  res.sendFile(path.join(__dirname, '/public/home.html'))
 })
 
 app.post('/twoFactorSetup', function(req, res){

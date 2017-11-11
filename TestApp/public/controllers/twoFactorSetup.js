@@ -21,7 +21,7 @@ twoSetupController.controller('AppCtrl', ['$scope', '$http', '$window', function
       headers: {
        'Content-Type': 'application/json'
       },
-      data: user
+      data: JSON.parse($window.localStorage.getItem('user'))
     }
     $http(req).then(function(res){
       $scope.qrcode = res.data.dataURL;

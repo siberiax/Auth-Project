@@ -14,7 +14,7 @@ twoSetupVerification.controller('AppCtrl', ['$scope', '$http', '$window', functi
     }
     $http(req).then(function(res) {
       if(res.data.success) {
-        $window.location.href = '/profile';
+        $window.location.href = '/home';
       } else {
         $scope.failure = "Wrong OTP";
       }
