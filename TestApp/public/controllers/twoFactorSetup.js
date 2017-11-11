@@ -7,7 +7,6 @@ twoSetupController.controller('AppCtrl', ['$scope', '$http', '$window', function
 
   if ($window.localStorage.getItem('fromRegister') == 'true'){
     $scope.allowed = true;
-    $window.localStorage.removeItem('fromRegister');
   } else {
     $window.location.href = '/register'
   }
@@ -40,6 +39,7 @@ twoSetupController.controller('AppCtrl', ['$scope', '$http', '$window', function
       }
       $http(req).then(function(res) {
         if(res.data.success) {
+          $window.localStorage.removeItem('fromRegister');
           $scope.result = "Success! You can login now";
         }
         else {
