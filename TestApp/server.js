@@ -95,6 +95,9 @@ app.get('/twoFactorSetup', (req, res) => {
 app.get('/home', authCheck,(req, res) => {
   res.sendFile(path.join(__dirname, '/public/home.html'))
 })
+app.get('/settings', authCheck,(req, res) => {
+  res.sendFile(path.join(__dirname, '/public/settings.html'))
+})
 
 app.post('/twoFactorSetup', function(req, res){
     secret = speakeasy.generateSecret({length: 10});
@@ -229,6 +232,64 @@ app.post('/register', (req, res, next) => {
       }
     });
   }
+});
+
+app.post('/changeName', authCheck, (req, res, next) => {
+  var username = req.body.username;
+  var name = req.body.name;
+  User.getUserByUsername(username, (err, user) => {
+    if (err) throw err;
+    if (!user){
+      return res.json({success: false, msg: "user not found"});
+    }
+    User.changeName(username, name, (err, user) => {
+      if (err) {
+        res.json({success: false, msg: 'Failed to change name'});
+      } else {
+        res.json({success: true, msg: "Name successfully changed"});
+      }
+    })
+  })
+});
+
+app.post('/changeEmail', authCheck, (req, res, next) => {
+  var username = req.body.username;
+  var email = req.body.email;
+  if (!validateEmail(email)){
+    res.json({success: false, msg: 'bad email'});
+  } else {
+    User.getUserByUsername(username, (err, user) => {
+      if (err) throw err;
+      if (!user){
+        return res.json({success: false, msg: "user not found"});
+      }
+      User.changeEmail(username, email, (err, user) => {
+        if (err) {
+          res.json({success: false, msg: 'Failed to change email'});
+        } else {
+          res.json({success: true, msg: "Email successfully changed"});
+        }
+      })
+    })
+  }
+});
+
+app.post('/changePassword', authCheck, (req, res, next) => {
+  var username = req.body.username;
+  var password = req.body.password;
+  User.getUserByUsername(username, (err, user) => {
+    if (err) throw err;
+    if (!user){
+      return res.json({success: false, msg: "user not found"});
+    }
+    User.changePassword(username, password, (err, user) => {
+      if (err) {
+        res.json({success: false, msg: 'Failed to change password'});
+      } else {
+        res.json({success: true, msg: "Password successfully changed"});
+      }
+    })
+  })
 });
 
 app.get('/logout', (req, res) => {

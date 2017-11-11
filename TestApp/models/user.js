@@ -59,3 +59,34 @@ module.exports.setupTwoFactor = function(user, twofactor, callback){
     callback(null, user);
   })
 }
+
+module.exports.changeName = function(username, name, callback){
+  var query = { 'username': username }
+  User.findOneAndUpdate(query, { $set: { 'name': name } }, (err, doc) => {
+    if (err) throw err;
+    callback(null, username);
+  })
+}
+
+module.exports.changeEmail = function(username, email, callback){
+  var query = { 'username': username }
+  User.findOneAndUpdate(query, { $set: { 'email': email } }, (err, doc) => {
+    if (err) throw err;
+    callback(null, username);
+  })
+}
+
+module.exports.changePassword = function(username, password, callback){
+  bcrypt.genSalt(10, (err, salt) => {
+    bcrypt.hash(password, salt, (err, hash) => {
+      if (err) throw err;
+      password = hash;
+      console.log(password);
+      var query = { 'username': username }
+      User.findOneAndUpdate(query, { $set: { 'password': password } }, (err, doc) => {
+        if (err) throw err;
+        callback(null, username);
+      })
+    });
+  });
+}
