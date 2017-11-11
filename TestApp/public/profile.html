@@ -28,19 +28,51 @@
     <script src="../controllers/profile.js"></script>
   </head>
   <body>
-    <div ng-show='userExists==true'>
-      <form ng-submit="addPost()">
-        <div class="container">
-          <div class="col-xs-6">
-            <h1><b>Profile for {{username}}</b></h1>
-            <br>
-            <label for="ex1"><b>Make a Post</b></label>
-            <input type="text" placeholder="Post" name="post" ng-model="post" required class="form-control" id="ex1">
-            <br>
-            <input type="submit" class="btn btn-primary" value="Post">
+    <div ng-show='userExists==true' class='container'>
+      <h1><b>Profile for {{username}}</b></h1>
+      <b>Email: </b> {{email}}
+      <div ng-if='!sameUser'>
+        <div ng-if='following'>
+          <br>
+          <form ng-submit="followUnfollow()">
+            <input type="submit" class="btn btn-success" value="Unfollow">
+          </form>
+        </div>
+        <div ng-if='!following'>
+          <br>
+          <form ng-submit="followUnfollow()">
+            <input type="submit" class="btn btn-success" value="Follow">
+          </form>
+        </div>
+      </div>
+      <div ng-show='sameUser==true'>
+        <form ng-submit="addPost()">
+          <div class="container">
+            <div class="col-xs-6">
+              <br>
+              <div>
+              <label for="ex1"><b>Make a Post</b></label>
+              <input type="text" placeholder="Post" name="post" ng-model="post" required class="form-control" id="ex1">
+              <br>
+              <input type="submit" class="btn btn-primary" value="Post">
+            </div>
           </div>
         </div>
-      </form>
+        </form>
+      </div>
+      <br>
+      <h4>Posts</h4>
+      <div ng-repeat='post in posts'>
+        <div class='col-sm-4'>
+          <div class="card text-white bg-dark">
+            <div class="card-body">
+              <blockquote class="card-blockquote">
+                <p>{{post.username}}: {{post.post}}</p>
+              </blockquote>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     <div ng-show='userExists==false'>
       User not found

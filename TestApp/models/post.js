@@ -17,3 +17,7 @@ const Post = module.exports = mongoose.model('Post', PostSchema);
 module.exports.addPost = function(newPost, callback){
   newPost.save(callback);
   }
+
+module.exports.getPostsByUsername = function(username, callback){
+  Post.find({username: username}, callback);
+  }
