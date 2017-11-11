@@ -11,7 +11,7 @@ twoSetupController.controller('AppCtrl', ['$scope', '$http', '$window', function
     $window.location.href = '/register'
   }
 
-  $scope.qrcode = ""
+  $scope.qrcode = null;
 
   $scope.onClick = function() {
     var req = {

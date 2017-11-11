@@ -35,10 +35,10 @@
         <div>
           <button ng-click="onClick()" class="btn btn-default">Display QRcode</button>
         </div>
-        <div>
+        <div ng-if='qrcode'>
           <br>
           <p><b>Scan the QR code using Google Authenticator</b></p>
-          <img ng-src="{{qrcode}}" alt="..." class="img-thumbnail">
+          <img ng-src="{{qrcode}}" class="img-thumbnail">
           <form ng-submit="confirmOTP(otp)">
             <div class="form-group">
               <br>
