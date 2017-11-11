@@ -8,6 +8,7 @@ const speakeasy = require('speakeasy');
 const QRCode = require('qrcode');
 const User = require('./models/user');
 const Post = require('./models/post');
+const Follow = require('./models/follow');
 const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser')
 
@@ -304,7 +305,7 @@ app.post('/getUser', authCheck, (req, res, next) => {
     if (!user){
       return res.json({success: false, msg: "user not found"});
     } else {
-      return res.json({success: true, msg: "user found"});
+      return res.json({success: true, msg: "user found", user: user});
     }
   });
 });
@@ -315,7 +316,7 @@ app.post('/addPost', authCheck, (req, res, next) => {
   } else {
     let newPost = new Post({
       username: req.body.username,
-      password: req.body.post,
+      post: req.body.post,
     });
     Post.addPost(newPost, (err) => {
       if (err) {
@@ -325,6 +326,52 @@ app.post('/addPost', authCheck, (req, res, next) => {
       }
     });
   }
+});
+
+app.post('/getPosts', authCheck, (req, res, next) => {
+  Post.getPostsByUsername(req.body.username, (err, posts) => {
+    if (err) throw err;
+    if (!posts){
+      return res.json({success: false, msg: "posts not found"});
+    } else {
+      return res.json({success: true, msg: "posts found", posts: posts});
+    }
+  });
+});
+
+app.post('/follow', authCheck, (req, res, next) => {
+  let newFollow = new Follow({
+    username: req.body.username,
+    following: req.body.following,
+  });
+  Follow.addFollow(newFollow, (err) => {
+    if (err) {
+      res.json({success: false, msg: 'Failed to follow user'});
+    } else {
+      res.json({success: true, msg: "User now followed"});
+    }
+  });
+});
+
+app.post('/unfollow', authCheck, (req, res, next) => {
+  Follow.deleteFollow(req.body.username, req.body.unfollow, (err) => {
+    if (err) {
+      res.json({success: false, msg: 'Failed to unfollow user'});
+    } else {
+      res.json({success: true, msg: "User now unfollowed"});
+    }
+  })
+});
+
+app.post('/getFollow', authCheck, (req, res, next) => {
+  Follow.getFollow(req.body.username, req.body.following, (err, doc) => {
+    if (err) throw err;
+    if (doc) {
+      res.json({following: true});
+    } else {
+      res.json({following: false});
+    }
+  })
 });
 
 app.get('/logout', (req, res) => {
