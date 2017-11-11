@@ -25,7 +25,27 @@
   <head>
     <link rel="stylesheet" href="https://bootswatch.com/3/sandstone/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
-    <script src="controllers/profileSetup.js"></script>
+    <script src="../controllers/profile.js"></script>
   </head>
+  <body>
+    <div ng-show='userExists==true'>
+      <form ng-submit="addPost()">
+        <div class="container">
+          <div class="col-xs-6">
+            <h1><b>Profile for {{username}}</b></h1>
+            <br>
+            <label for="ex1"><b>Make a Post</b></label>
+            <input type="text" placeholder="Post" name="post" ng-model="post" required class="form-control" id="ex1">
+            <br>
+            <input type="submit" class="btn btn-primary" value="Post">
+          </div>
+        </div>
+      </form>
+    </div>
+    <div ng-show='userExists==false'>
+      User not found
+    </div>
 
+  {{result}}
+  </body>
 </html>

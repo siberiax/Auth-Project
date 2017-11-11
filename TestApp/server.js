@@ -7,6 +7,7 @@ const config = require('./config/database');
 const speakeasy = require('speakeasy');
 const QRCode = require('qrcode');
 const User = require('./models/user');
+const Post = require('./models/post');
 const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser')
 
@@ -95,8 +96,13 @@ app.get('/twoFactorSetup', (req, res) => {
 app.get('/home', authCheck,(req, res) => {
   res.sendFile(path.join(__dirname, '/public/home.html'))
 })
+
 app.get('/settings', authCheck,(req, res) => {
   res.sendFile(path.join(__dirname, '/public/settings.html'))
+})
+
+app.get('/profile/:username', authCheck, (req, res) => {
+  res.sendFile(path.join(__dirname, '/public/profile.html'))
 })
 
 app.post('/twoFactorSetup', function(req, res){
@@ -290,6 +296,35 @@ app.post('/changePassword', authCheck, (req, res, next) => {
       }
     })
   })
+});
+
+app.post('/getUser', authCheck, (req, res, next) => {
+  User.getUserByUsername(req.body.username, (err, user) => {
+    if (err) throw err;
+    if (!user){
+      return res.json({success: false, msg: "user not found"});
+    } else {
+      return res.json({success: true, msg: "user found"});
+    }
+  });
+});
+
+app.post('/addPost', authCheck, (req, res, next) => {
+  if (req.body.post.length > 150){
+    res.json({success: false, msg: 'Post is too long'});
+  } else {
+    let newPost = new Post({
+      username: req.body.username,
+      password: req.body.post,
+    });
+    Post.addPost(newPost, (err) => {
+      if (err) {
+        res.json({success: false, msg: 'Failed to make post'});
+      } else {
+        res.json({success: true, msg: "post created"});
+      }
+    });
+  }
 });
 
 app.get('/logout', (req, res) => {
