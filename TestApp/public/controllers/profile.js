@@ -33,7 +33,7 @@ profileController.controller('AppCtrl', ['$scope', '$http', '$window', function(
        data: {username: $scope.username}
       }
       $http(req).then(function(res){
-        $scope.posts = res.data.posts;
+        $scope.posts = (res.data.posts).reverse();
         if (!$scope.sameUser){
           var req = {
            method: 'POST',
@@ -63,7 +63,8 @@ profileController.controller('AppCtrl', ['$scope', '$http', '$window', function(
      data: {post: $scope.post, username: $scope.username}
     }
     $http(req).then(function(res){
-      $scope.result = res.data.msg;
+      $window.location.href = '/profile/' + $scope.username
+      //$scope.result = res.data.msg;
     });
   };
 
@@ -98,6 +99,4 @@ profileController.controller('AppCtrl', ['$scope', '$http', '$window', function(
       });
     }
   }
-
-
 }]);

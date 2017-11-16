@@ -14,6 +14,7 @@
         <li><a href="/home">Home</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
+        <li><a href="/search">Search</a></li>
         <li><a href="/settings">Settings</a></li>
         <li><a href="/logout">Logout</a></li>
       </ul>
@@ -64,7 +65,6 @@
       <br>
       <h4>Posts</h4>
       <div ng-repeat='post in posts'>
-        <div class='col-sm-4'>
           <div class="card text-white bg-dark">
             <div class="card-body">
               <blockquote class="card-blockquote">
@@ -78,7 +78,6 @@
     <div ng-show='userExists==false'>
       User not found
     </div>
-
   {{result}}
   </body>
 </html>

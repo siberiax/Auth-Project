@@ -2,6 +2,7 @@ var settingsController = angular.module("settingsController", []);
 settingsController.controller('AppCtrl', ['$scope', '$http', '$window', function($scope, $http, $window){
 
   $scope.name = JSON.parse($window.localStorage.getItem('user')).name;
+  $scope.username = JSON.parse($window.localStorage.getItem('user')).username;
 
   $scope.message = "";
 
