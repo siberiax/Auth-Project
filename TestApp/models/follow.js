@@ -31,3 +31,10 @@ module.exports.getFollow = function(user1, user2, callback){
     callback(null, doc);
   });
 }
+
+module.exports.getFollowing = function(username, callback){
+  Follow.find({username: username}, (err, doc) => {
+    if (err) throw err;
+    callback(null, doc);
+  });
+}

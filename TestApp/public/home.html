@@ -35,4 +35,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
   </head>
+  <body>
+    <div class="container">
+      <h1><b>What's going on in the world</b></h1>
+      <br>
+      {{message}}
+    </div>
+    <div class="container">
+      <div ng-repeat='post in posts'>
+        <div>
+          <div class="card text-white bg-dark">
+            <div class="card-body">
+              <blockquote class="card-blockquote">
+                <p><a href='/profile/{{post.username}}'>{{post.username}}</a>: {{post.post}}</p>
+              </blockquote>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
 </html>
