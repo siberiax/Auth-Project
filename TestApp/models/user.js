@@ -90,3 +90,9 @@ module.exports.changePassword = function(username, password, callback){
     });
   });
 }
+
+module.exports.searchForUsers = function(searchName, callback) {
+  var query = {username: ""};
+  query.username = new RegExp(searchName, 'g');
+  User.find(query, callback);
+}

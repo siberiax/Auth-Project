@@ -106,6 +106,10 @@ app.get('/profile/:username', authCheck, (req, res) => {
   res.sendFile(path.join(__dirname, '/public/profile.html'))
 })
 
+app.get('/search', (req, res) => {
+  res.sendFile(path.join(__dirname, '/public/search.html'))
+})
+
 app.post('/twoFactorSetup', function(req, res){
     secret = speakeasy.generateSecret({length: 10});
     QRCode.toDataURL(secret.otpauth_url, (err, data_url)=>{
@@ -385,6 +389,17 @@ app.get('/logout', (req, res) => {
   res.redirect('/');
 })
 
+app.post('/userSearch', authCheck, (req, res, next) => {
+  User.searchForUsers(req.body.searchName, (err, users) => {
+    if (err) throw err;
+    if (!users){
+      return res.json({success: false, msg: "no users found"});
+    }
+    else {
+      return res.json({success: true, msg: "user(s) found", users: users})
+    }
+  });
+});
 
 // Start Server
 app.listen(port, () => {
