@@ -401,6 +401,18 @@ app.post('/userSearch', authCheck, (req, res, next) => {
   });
 });
 
+app.post('/getFollowing', authCheck, (req, res, next) => {
+  Follow.getFollowing(req.body.username, (err, users) => {
+    if (err) throw err;
+    if (!users){
+      return res.json({success: false, msg: "no users found"});
+    }
+    else {
+      return res.json({success: true, msg: "user(s) found", users: users})
+    }
+  })
+})
+
 // Start Server
 app.listen(port, () => {
   console.log('Server started on port '+port);
