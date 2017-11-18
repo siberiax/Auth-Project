@@ -50,17 +50,16 @@ settingsController.controller('AppCtrl', ['$scope', '$http', '$window', function
   }
 
   $scope.changePassword = function(){
-    console.log($scope.newPassword);
     var req = {
       method: 'POST',
       url: 'http://localhost:3000/changePassword',
       headers: {
         'Content-Type': 'application/json'
       },
-      data: {password: $scope.newPassword, username: JSON.parse($window.localStorage.getItem('user')).username}
+      data: {oldpass: $scope.oldPassword, password: $scope.newPassword, username: JSON.parse($window.localStorage.getItem('user')).username}
     }
     $http(req).then(function(res){
       $scope.message = res.data.msg;
-    })
-  }
+    });
+  };
 }]);

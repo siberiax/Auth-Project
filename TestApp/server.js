@@ -106,7 +106,7 @@ app.get('/profile/:username', authCheck, (req, res) => {
   res.sendFile(path.join(__dirname, '/public/profile.html'))
 })
 
-app.get('/search', (req, res) => {
+app.get('/search', authCheck, (req, res) => {
   res.sendFile(path.join(__dirname, '/public/search.html'))
 })
 
@@ -296,16 +296,24 @@ app.post('/changeEmail', authCheck, (req, res, next) => {
 app.post('/changePassword', authCheck, (req, res, next) => {
   var username = req.body.username;
   var password = req.body.password;
+  var oldpass = req.body.oldpass
   User.getUserByUsername(username, (err, user) => {
     if (err) throw err;
     if (!user){
       return res.json({success: false, msg: "user not found"});
     }
-    User.changePassword(username, password, (err, user) => {
-      if (err) {
-        res.json({success: false, msg: 'Failed to change password'});
+    User.comparePassword(oldpass, user.password, (err, isMatch) => {
+      if (err) throw err;
+      if (isMatch){
+        User.changePassword(username, password, (err, user) => {
+          if (err) {
+            res.json({success: false, msg: 'Failed to change password'});
+          } else {
+            res.json({success: true, msg: "Password successfully changed"});
+          }
+        })
       } else {
-        res.json({success: true, msg: "Password successfully changed"});
+        res.json({success: false, msg: "Old Password wrong"});
       }
     })
   })

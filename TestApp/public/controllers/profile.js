@@ -6,6 +6,7 @@ profileController.controller('AppCtrl', ['$scope', '$http', '$window', function(
   $scope.results = "";
   $scope.username = "";
   $scope.email = "";
+  $scope.name = "";
   $scope.posts = null;
   $scope.following = null;
   $scope.numFollowing = null;
@@ -23,6 +24,7 @@ profileController.controller('AppCtrl', ['$scope', '$http', '$window', function(
       $scope.userExists = true;
       $scope.username = $window.location.href.substring(30);
       $scope.email = res.data.user.email;
+      $scope.name = res.data.user.name;
       var sameUser = $window.location.href.substring(30) == JSON.parse($window.localStorage.getItem('user')).username;
       $scope.sameUser = sameUser;
       var req = {

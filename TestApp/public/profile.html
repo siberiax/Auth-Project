@@ -32,6 +32,7 @@
   <body>
     <div ng-show='userExists==true' class='container'>
       <h1><b>Profile for {{username}}</b></h1>
+      <b>Name: </b> {{name}}<p>
       <b>Email: </b> {{email}}
       <p></p>
       <div style="float: right; padding-left: 30px; width: 1050px">
@@ -75,7 +76,7 @@
       </div>
       <br>
       <h4>Posts</h4>
-      <div ng-repeat='post in posts'>
+      <div ng-repeat="post in posts | orderBy: '-_id'">
           <div class="card text-white bg-dark">
             <div class="card-body">
               <blockquote class="card-blockquote">
