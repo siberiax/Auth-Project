@@ -325,6 +325,7 @@ app.post('/addPost', authCheck, (req, res, next) => {
     let newPost = new Post({
       username: req.body.username,
       post: req.body.post,
+      time: req.body.time
     });
     Post.addPost(newPost, (err) => {
       if (err) {

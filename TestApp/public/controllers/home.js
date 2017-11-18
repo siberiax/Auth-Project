@@ -44,5 +44,9 @@ homeController.controller('AppCtrl', ['$scope', '$http', '$window', function($sc
       })
       i++;
     }
+    // $scope.posts.sort(function(a, b) {
+    //   return a.id - b.id;
+    // });
+    //$scope.posts.reverse();
   })
 }]);

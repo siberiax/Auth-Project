@@ -42,12 +42,13 @@
       {{message}}
     </div>
     <div class="container">
-      <div ng-repeat='post in posts'>
+      <div ng-repeat="post in posts | orderBy: '_id'">
         <div>
           <div class="card text-white bg-dark">
             <div class="card-body">
               <blockquote class="card-blockquote">
                 <p><a href='/profile/{{post.username}}'>{{post.username}}</a>: {{post.post}}</p>
+                <h6>{{post.time}}<h6>
               </blockquote>
             </div>
           </div>

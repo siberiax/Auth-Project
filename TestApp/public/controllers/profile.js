@@ -55,17 +55,28 @@ profileController.controller('AppCtrl', ['$scope', '$http', '$window', function(
   });
 
   $scope.addPost = function() {
+    var timeString = ""
+    var d = new Date().toString().split(" ")
+    timeString += d[1] + " " + d[2] + " " + d[3] + " "
+    var t = d[4].split(":")
+    var hour = parseInt(t)%12
+    timeString += hour + ":" + t[1]
+    if (t[0] > 11){
+      timeString += " pm"
+    } else {
+      timeString += " am"
+    }
     var req = {
      method: 'POST',
      url: 'http://localhost:3000/addPost',
      headers: {
        'Content-Type': 'application/json'
      },
-     data: {post: $scope.post, username: $scope.username}
+     data: {post: $scope.post, username: $scope.username, time: timeString}
     }
+    console.log(req);
     $http(req).then(function(res){
       $window.location.href = '/profile/' + $scope.username
-      //$scope.result = res.data.msg;
     });
   };
 

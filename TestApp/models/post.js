@@ -9,6 +9,10 @@ const PostSchema = mongoose.Schema({
   post: {
     type: String,
     required: true
+  },
+  time: {
+    type: String,
+    required: true
   }
 });
 
