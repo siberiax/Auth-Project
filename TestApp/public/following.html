@@ -32,9 +32,14 @@
   <body>
     <div class="container">
       <h4><b>Following</b></h4>
-      <p ng-repeat = "user in following">
-        <a href='/profile/{{user.following}}'>{{user.following}}</a>
-      </p>
+      <div ng-if='!hasFollowing'>
+        {{message}}
+      </div>
+      <div>
+        <p ng-repeat = "user in following">
+          <a href='/profile/{{user.following}}'>{{user.following}}</a>
+        </p>
+      </div>
     </div>
   </body>
 </html>
