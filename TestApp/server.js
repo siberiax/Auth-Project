@@ -110,6 +110,10 @@ app.get('/search', (req, res) => {
   res.sendFile(path.join(__dirname, '/public/search.html'))
 })
 
+app.get('/following', (req, res) => {
+  res.sendFile(path.join(__dirname, '/public/following.html'))
+})
+
 app.post('/twoFactorSetup', function(req, res){
     secret = speakeasy.generateSecret({length: 10});
     QRCode.toDataURL(secret.otpauth_url, (err, data_url)=>{
@@ -403,6 +407,18 @@ app.post('/userSearch', authCheck, (req, res, next) => {
 
 app.post('/getFollowing', authCheck, (req, res, next) => {
   Follow.getFollowing(req.body.username, (err, users) => {
+    if (err) throw err;
+    if (!users){
+      return res.json({success: false, msg: "no users found"});
+    }
+    else {
+      return res.json({success: true, msg: "user(s) found", users: users})
+    }
+  })
+})
+
+app.post('/getFollowers', authCheck, (req, res, next) => {
+  Follow.getFollowers(req.body.username, (err, users) => {
     if (err) throw err;
     if (!users){
       return res.json({success: false, msg: "no users found"});

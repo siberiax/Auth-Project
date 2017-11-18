@@ -8,6 +8,7 @@ profileController.controller('AppCtrl', ['$scope', '$http', '$window', function(
   $scope.email = "";
   $scope.posts = null;
   $scope.following = null;
+  $scope.numFollowing = null;
 
   var req = {
    method: 'POST',
@@ -99,4 +100,49 @@ profileController.controller('AppCtrl', ['$scope', '$http', '$window', function(
       });
     }
   }
+
+  $scope.username = $window.location.href.substring(30);
+  $scope.following = "";
+  $scope.followers = "";
+
+  var req = {
+    method: 'POST',
+    url: 'http://localhost:3000/getFollowing',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    data: {username: $scope.username}
+  }
+  $http(req).then(function(res){
+    $scope.following = res.data.users;
+    $scope.numFollowing = ($scope.following).length;
+    console.log(res.data.users);
+  });
+
+  $scope.getFollowing = function() {
+    $http(req).then(function(res){
+
+    });
+
+  }
+
+  var req = {
+    method: 'POST',
+    url: 'http://localhost:3000/getFollowers',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    data: {username: $scope.username}
+  }
+  $http(req).then(function(res){
+    $scope.followers = res.data.users;
+    $scope.numFollowers = ($scope.followers).length;
+  });
+
+  $scope.getFollowers = function() {
+    $http(req).then(function(res){
+      console.log(res.data.users);
+    });
+  }
+
 }]);

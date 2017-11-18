@@ -38,3 +38,10 @@ module.exports.getFollowing = function(username, callback){
     callback(null, doc);
   });
 }
+
+module.exports.getFollowers = function(username, callback){
+  Follow.find({following: username}, (err, doc) => {
+    if (err) throw err;
+    callback(null, doc);
+  });
+}
