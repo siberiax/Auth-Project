@@ -22,19 +22,24 @@
   </div>
 </nav>
 
-<html ng-app="followingController" ng-controller="AppCtrl">
+<html ng-app="followersController" ng-controller="AppCtrl">
   <head>
     <link rel="stylesheet" href="https://bootswatch.com/3/sandstone/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
-    <script src="/controllers/following.js"></script>
+    <script src="/controllers/followers.js"></script>
     <title>Following</title>
   </head>
   <body>
     <div class="container">
-      <h4><b>Following</b></h4>
-      <p ng-repeat = "user in following">
-        <a href='/profile/{{user.following}}'>{{user.following}}</a>
-      </p>
+      <h4><b>Followers</b></h4>
+      <div ng-if='!hasFollowers'>
+        {{message}}
+      </div>
+      <div>
+        <p ng-repeat = "user in followers">
+          <a href='/profile/{{user.username}}'>{{user.username}}</a>
+        </p>
+      </div>
     </div>
   </body>
 </html>

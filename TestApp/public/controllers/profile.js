@@ -121,7 +121,7 @@ profileController.controller('AppCtrl', ['$scope', '$http', '$window', function(
 
   $scope.getFollowing = function() {
     $http(req).then(function(res){
-
+      $window.location.href = '/following/' + $scope.username
     });
 
   }
@@ -141,8 +141,7 @@ profileController.controller('AppCtrl', ['$scope', '$http', '$window', function(
 
   $scope.getFollowers = function() {
     $http(req).then(function(res){
-      console.log(res.data.users);
+      $window.location.href = '/followers/' + $scope.username
     });
   }
-
 }]);
