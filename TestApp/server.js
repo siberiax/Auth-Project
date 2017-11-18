@@ -110,8 +110,12 @@ app.get('/search', (req, res) => {
   res.sendFile(path.join(__dirname, '/public/search.html'))
 })
 
-app.get('/following', (req, res) => {
+app.get('/following/:username', authCheck, (req, res) => {
   res.sendFile(path.join(__dirname, '/public/following.html'))
+})
+
+app.get('/followers/:username', authCheck, (req, res) => {
+  res.sendFile(path.join(__dirname, '/public/followers.html'))
 })
 
 app.post('/twoFactorSetup', function(req, res){
