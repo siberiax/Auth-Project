@@ -4,6 +4,8 @@ followingController.controller('AppCtrl', ['$scope', '$http', '$window', functio
 
   $scope.username = $window.location.href.substring(32);
   $scope.following = "";
+  $scope.hasFollowing = null;
+  $scope.message = "";
 
   var req = {
     method: 'POST',
@@ -15,7 +17,11 @@ followingController.controller('AppCtrl', ['$scope', '$http', '$window', functio
   }
   $http(req).then(function(res){
     $scope.following = res.data.users;
+    $scope.hasFollowing = true;
     $scope.numFollowing = ($scope.following).length;
-    console.log(res.data.users);
+    if ($scope.numFollowing == 0) {
+      $scope.hasFollowing = false;
+      $scope.message = "Start Following people!";
+    }
   });
 }]);
