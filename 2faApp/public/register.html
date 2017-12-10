@@ -1,0 +1,67 @@
+<nav class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+        <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">Two-Factor Authentication App</a>
+    </div>
+    <div id="navbar" class="collapse navbar-collapse">
+      <ul class="nav navbar-nav navbar-left">
+        <li><a href="/">Home</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/login">Login</a></li>
+        <li><a href="/register">Register</a></li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div>
+</nav>
+
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+<script src="controllers/register.js"></script>
+<meta charset="utf-8">
+<title>Register</title>
+<link rel="stylesheet" href="https://bootswatch.com/3/sandstone/bootstrap.min.css">
+<base href="/register">
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+
+
+</head>
+<body ng-app="registerController" ng-controller="AppCtrl">
+  <div class="container">
+    <form ng-submit='addUser()'>
+      <div class="form-group">
+        <div class="col-xs-3">
+          <h1>Register</h1>
+          <br>
+          <label for="ex1"><b>Name</b></label>
+          <input type="text" name="name" required class="form-control" ng-model='user.name' id="ex1">
+          <br>
+          <label for"ex1"><b>Username</b></label>
+          <input type="text" name="username" required class="form-control" ng-model='user.username' id="ex1">
+          <br>
+          <label for"ex1"><b>Email</b></label>
+          <input type="text" name="email" required class="form-control" ng-model='user.email' id="ex1">
+          <br>
+          <label for="ex1"><b>Password</b></label>
+          <input type="password" name="password" required class="form-control" ng-model='user.password' id="ex1">
+          <br>
+          <label for="ex1"><b>Confirm Password</b></label>
+          <input type="password" name="password" required class="form-control" ng-model='password2' id="ex1">
+          <br />
+          <input type="submit" class="btn btn-primary" value="Submit">
+        </div>
+      </div>
+    </form>
+    {{failure}}
+  </div>
+</body>
+</html>

@@ -1,0 +1,55 @@
+<nav class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+        <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">Two-Factor Authentication App</a>
+    </div>
+    <div id="navbar" class="collapse navbar-collapse">
+      <ul class="nav navbar-nav navbar-left">
+        <li><a href="/">Home</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/login">Login</a></li>
+        <li><a href="/register">Register</a></li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div>
+</nav>
+
+<!doctype html>
+<html>
+<head>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+  <script src="controllers/login.js"></script>
+  <meta charset="utf-8">
+  <title>Login</title>
+  <link rel="stylesheet" href="https://bootswatch.com/3/sandstone/bootstrap.min.css">
+  <base href="/login">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+</head>
+<body ng-app="loginController" ng-controller="AppCtrl">
+    <form ng-submit="loginUser()">
+      <div class="form-group">
+        <div class="col-xs-2">
+          <h1><b>Login</b></h1>
+          <br>
+          <label for="ex1"><b>Username</b></label>
+          <input type="text" placeholder="Enter Username" name="username" ng-model="user.username" required class="form-control" id="ex1">
+          <br>
+          <label for"ex1"><b>Password</b></label>
+          <input type="password" placeholder="Enter Password" name="password" ng-model="user.password" required class="form-control" id="ex1">
+          <br>
+          <input type="submit" class="btn btn-primary" value="Login">
+        </div>
+      </div>
+    </form>
+    {{failure}}
+</body>
+</html>

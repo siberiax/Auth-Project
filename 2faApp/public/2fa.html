@@ -1,0 +1,47 @@
+<nav class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+        <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">Two-Factor Authentication App</a>
+    </div>
+    <div id="navbar" class="collapse navbar-collapse">
+      <ul class="nav navbar-nav navbar-left">
+        <li><a href="/">Home</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/login">Login</a></li>
+        <li><a href="/register">Register</a></li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div>
+</nav>
+
+<!DOCTYPE>
+<html ng-app="twoSetupVerification" ng-controller="AppCtrl">
+  <head>
+    <link rel="stylesheet" href="https://bootswatch.com/3/sandstone/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+    <script src="controllers/2fa.js"></script>
+  </head>
+  <body>
+    <div class="container">
+        <div>
+          <form ng-submit="verify(otp)">
+            <div class="form-group">
+              <br>
+              <label for="otp"><b>Enter Otp:</b></label>
+              <input type="text" style="width: 240px" name="otp" required class="form-control" ng-model = 'otp' id="otp">
+              <br>
+              <input type="submit" class="btn btn-primary" value="Submit">
+            </div>
+          </form>
+        </div>
+        {{failure}}
+    </div>
+  </body>
+</html>
